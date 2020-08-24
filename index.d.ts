@@ -3827,7 +3827,26 @@ export module mxgraph {
    * size is given, then a default size of 100 steps is used.
    */
   export class mxUndoManager extends mxEventSource {
-    constructor(size: any);
+    /**
+     * Maximum command history size.  0 means unlimited history.  Default is 100.
+     */
+    size: number;
+
+    /**
+     * Array that contains the steps of the command history.
+     */
+    history: any[];
+
+    /**
+     * Index of the element to be added next.
+     */
+    indexOfNextAdd: number;
+
+    /**
+     *  If no history size is given, then a default size of 100 steps is used.
+     */
+    constructor(size?: any);
+
     /**
      * Returns true if the history is empty.
      */
