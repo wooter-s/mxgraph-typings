@@ -2078,7 +2078,38 @@ export module mxgraph {
     ): void;
   };
 
-  export var mxUtils: any;
+  export var mxUtils: {
+    errorResource: 'error' | '';
+    closeResource: 'close' | '';
+    errorImage: string;
+    removeCursors: (element: HTMLElement) => void;
+    extend: (ctor: any, superCtor: any) => void;
+    getValue: (array: string[], key: string, defaultValue: any) => any;
+
+    // https://jgraph.github.io/mxgraph/docs/js-api/files/util/mxUtils-js.html#mxUtils.clone
+
+    /**
+     *
+     * @param obj Object to be cloned.
+     * @param transients Optional array of strings representing the fieldname to be ignored.
+     * @param shallow Optional boolean argument to specify if a shallow clone should be created, that is, one where all object references are not cloned or, in other words, one where only atomic (strings, numbers) values are cloned.  Default is false.
+     */
+    clone: (obj: object, transients?: string[], shallow?: boolean) => void;
+    isAncestorNode: (ancestor: HTMLElement | any, child: HTMLElement | any) => boolean;
+
+    makeDraggable: (
+        element: HTMLElement,
+        graphF: any,
+        funct: any,
+        dragElement: HTMLElement,
+        dx?: number | null,
+        dy?: number | null,
+        autoscroll?: boolean | null,
+        scalePreview?: boolean,
+        highlightDropTargets?: boolean,
+        getDropTarget?: any
+    ) => void
+  };
 
   export var mxConstants: {
     DEFAULT_HOTSPOT: number;
@@ -2551,7 +2582,7 @@ export module mxgraph {
      *
      * The parameters of the listener are the sender and an <mxEventObject>.
      */
-    addListener(name: any, funct: any): void;
+    addListener(name: any, funct: (sender: mxGraph, evt: mxEventObject) => void): void;
     /**
      * Removes all occurrences of the given listener from <eventListeners>.
      */
@@ -2603,7 +2634,7 @@ export module mxgraph {
       dblClick: any
     ): void;
     release(element: any): void;
-    addMouseWheelListener(funct: any): void;
+    addMouseWheelListener(funct: any, target: any): void;
     disableContextMenu: (element: any) => void;
     getSource(evt: any): any;
     isConsumed(evt: any): boolean;
@@ -7836,8 +7867,8 @@ export module mxgraph {
         * };
         *
         * va    invalidating: any;    invalidating: any;    [x: string]: any;
-     
-     
+
+
     r cellLabelChanged = graph.cellLabelChanged;
         * graph.cellLabelChanged = function(cell, newValue, autoSize)
         * {
@@ -9376,6 +9407,12 @@ export module mxgraph {
      * Destroys the editor and removes all associated resources.
      */
     destroy(): void;
+
+    // https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxCellEditor-js.html#mxCellEditor.escapeCancelsEditing
+    escapeCancelsEditing: boolean;
+
+    // https://jgraph.github.io/mxgraph/docs/js-api/files/view/mxCellEditor-js.html#mxCellEditor.blurEnabled
+    blurEnabled: boolean;
   }
 
   /**
@@ -11886,6 +11923,15 @@ export module mxgraph {
      * container - DOM node that will contain the graph display.
      */
     init(container: HTMLScriptElement): void;
+
+    createEdge(
+        parent: mxCell,
+        id?: string,
+        value?: any,
+        source?: mxCell,
+        target?: mxCell,
+        style?: any
+    ): void
     /**
      * Creates the tooltip-, panning-, connection- and graph-handler (in this
      * order). This is called in the constructor before <init> is called.
@@ -15343,6 +15389,27 @@ export module mxgraph {
    */
   export class mxOutline {
     constructor(source: any, container: any);
+
+    /**
+     * Specifies if events are handled.  Default is true.
+     */
+    enabled: boolean;
+    /**
+     * Specifies a viewport rectangle should be shown.  Default is true.
+     */
+    showViewport: boolean;
+    /**
+     * Border to be added at the bottom and right.  Default is 10.
+     */
+    border: number;
+    /**
+     * Specifies if update should be called for mxEvent.PAN in the source graph.  Default is false.
+     */
+    updateOnPan: boolean;
+    /**
+     * Optional boolean flag to suspend updates.  Default is false.  This flag will also suspend repaints of the outline.  To toggle this switch, use the following code.
+     */
+    suspended: boolean;
     /**
      * Creates the <mxGraph> used in the outline.
      */
@@ -15975,7 +16042,6 @@ export module mxgraph {
      * left side of the current selection. Default is false.
      */
     guidesEnabled: boolean;
-
     /**
      * Variable: guide
      *
@@ -18968,6 +19034,9 @@ export module mxgraph {
      * window unloads (in IE) by <mxEditor>.
      */
     destroy(): void;
+
+    editor: mxEditor;
+    handler: mxKeyHandler;
   }
 
   /**
