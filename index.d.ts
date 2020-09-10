@@ -11950,7 +11950,7 @@ export module mxgraph {
         source?: mxCell,
         target?: mxCell,
         style?: any
-    ): void
+    ): mxCell
     /**
      * Creates the tooltip-, panning-, connection- and graph-handler (in this
      * order). This is called in the constructor before <init> is called.
@@ -17487,6 +17487,23 @@ export module mxgraph {
    * returns the <mxCell> that represents the new edge.
    */
   export class mxConstraintHandler {
+    /**
+     * mxImage to be used as the image for fixed connection points.
+     */
+    pointImage: mxImage;
+    /**
+     * Reference to the enclosing mxGraph.
+     */
+    graph: mxGraph;
+    /**
+     * Specifies if events are handled.  Default is true.
+     */
+    enabled: boolean;
+    /**
+     * Specifies the color for the highlight.  Default is mxConstants.DEFAULT_VALID_COLOR.
+     */
+    highlightColor: string;
+
     constructor(graph: any);
     /**
      * Returns true if events are handled. This implementation
