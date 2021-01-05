@@ -2083,6 +2083,12 @@ export module mxgraph {
     closeResource: 'close' | '';
     errorImage: string;
     removeCursors: (element: HTMLElement) => void;
+    getCurrentStyle: () => string;
+    /**
+     * Parses the given CSS numeric value adding handling for the values thin, medium and thick (2, 4 and 6).
+     * @param value
+     */
+    parseCssNumber: (value: any) => number;
     extend: (ctor: any, superCtor: any) => void;
     getValue: (array: string[], key: string, defaultValue: any) => any;
 
